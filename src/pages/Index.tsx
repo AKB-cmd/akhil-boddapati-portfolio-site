@@ -297,24 +297,18 @@ const Index = () => {
               transition={{ duration: 0.8 }}
               className="flex flex-col lg:flex-row items-center lg:items-start space-y-8 lg:space-y-0 lg:space-x-16"
             >
-              {/* Enhanced Profile Image Section */}
+              {/* Simple Profile Image Section */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
                 className="flex-shrink-0"
               >
-                <div className="relative group">
-                  <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-primary/40 rounded-full blur-lg group-hover:blur-xl transition-all duration-300"></div>
-                  <img 
-                    src={profileImage} 
-                    alt="Akhil Kumar Boddapati" 
-                    className="relative w-56 h-56 lg:w-64 lg:h-64 rounded-full object-cover border-4 border-background shadow-2xl group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute -bottom-3 -right-3 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-6 py-3 rounded-full text-sm font-semibold shadow-lg animate-pulse">
-                    Available for Opportunities
-                  </div>
-                </div>
+                <img 
+                  src={profileImage} 
+                  alt="Akhil Kumar Boddapati" 
+                  className="w-56 h-56 lg:w-64 lg:h-64 rounded-full object-cover border-4 border-background shadow-lg"
+                />
               </motion.div>
 
               {/* Enhanced Content Section */}
