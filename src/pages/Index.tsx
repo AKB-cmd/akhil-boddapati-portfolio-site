@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,6 +8,9 @@ import { motion, AnimatePresence } from "framer-motion";
 const Index = () => {
   const [activeSection, setActiveSection] = useState("home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showProfileHover, setShowProfileHover] = useState(false);
+
+  const profileImage = "/lovable-uploads/bdf9dc0c-0f06-4bd3-aea7-490cd98d3a8e.png";
 
   const navItems = [
     { id: "home", label: "Home" },
@@ -132,9 +134,46 @@ const Index = () => {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-xl font-bold text-primary"
+              className="flex items-center space-x-3 relative"
+              onMouseEnter={() => setShowProfileHover(true)}
+              onMouseLeave={() => setShowProfileHover(false)}
             >
-              Akhil Kumar Boddapati
+              <div className="relative">
+                <img 
+                  src={profileImage} 
+                  alt="Akhil Kumar Boddapati" 
+                  className="w-10 h-10 rounded-full object-cover border-2 border-primary/20"
+                />
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-background"></div>
+              </div>
+              <span className="text-xl font-bold text-primary cursor-pointer">
+                Akhil Kumar Boddapati
+              </span>
+              
+              {/* Hover Profile Card */}
+              <AnimatePresence>
+                {showProfileHover && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                    className="absolute top-full left-0 mt-2 bg-background border border-border rounded-lg p-4 shadow-lg z-50 min-w-[280px]"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <img 
+                        src={profileImage} 
+                        alt="Akhil Kumar Boddapati" 
+                        className="w-16 h-16 rounded-full object-cover"
+                      />
+                      <div>
+                        <h3 className="font-semibold text-foreground">Akhil Kumar Boddapati</h3>
+                        <p className="text-sm text-muted-foreground">Piping Engineer & Tech Enthusiast</p>
+                        <p className="text-xs text-muted-foreground mt-1">Building Smart Digital Solutions</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
             
             {/* Desktop Navigation */}
@@ -190,30 +229,65 @@ const Index = () => {
       {/* Hero Section */}
       <section id="home" className="pt-20 pb-16 bg-gradient-to-br from-background to-muted/30">
         <div className="container mx-auto px-4 py-16">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
+              className="flex flex-col md:flex-row items-center md:items-start space-y-8 md:space-y-0 md:space-x-12"
             >
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                Akhil Kumar Boddapati
-              </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground mb-6 font-medium">
-                Piping Engineer Turned Tech Enthusiast | Building Smart Digital Solutions
-              </p>
-              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-                Mechanical Engineer with current industry experience and a growing passion for technology and digital innovation. 
-                Actively building skills in full-stack development and data analysis while contributing to real-world engineering projects.
-              </p>
-              <Button 
-                onClick={() => scrollToSection("projects")} 
-                size="lg" 
-                className="group"
+              {/* Profile Image Section */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="flex-shrink-0"
               >
-                Explore My Work
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
+                <div className="relative">
+                  <img 
+                    src={profileImage} 
+                    alt="Akhil Kumar Boddapati" 
+                    className="w-48 h-48 md:w-56 md:h-56 rounded-full object-cover border-4 border-primary/20 shadow-xl"
+                  />
+                  <div className="absolute -bottom-2 -right-2 bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-medium shadow-lg">
+                    Available for Hire
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Content Section */}
+              <div className="flex-1 text-center md:text-left">
+                <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                  Akhil Kumar Boddapati
+                </h1>
+                <p className="text-xl md:text-2xl text-muted-foreground mb-6 font-medium">
+                  Piping Engineer Turned Tech Enthusiast | Building Smart Digital Solutions
+                </p>
+                <p className="text-lg text-muted-foreground mb-8 max-w-2xl leading-relaxed">
+                  Mechanical Engineer with current industry experience and a growing passion for technology and digital innovation. 
+                  Actively building skills in full-stack development and data analysis while contributing to real-world engineering projects.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                  <Button 
+                    onClick={() => scrollToSection("projects")} 
+                    size="lg" 
+                    className="group"
+                  >
+                    Explore My Work
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    asChild
+                  >
+                    <a href="https://www.linkedin.com/in/akhil-kumar-boddapati-962752186/" target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="mr-2 h-4 w-4" />
+                      Connect on LinkedIn
+                    </a>
+                  </Button>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -229,14 +303,25 @@ const Index = () => {
             className="max-w-4xl mx-auto"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">About Me</h2>
-            <Card className="p-8">
+            <Card className="p-8 hover:shadow-lg transition-shadow">
               <CardContent className="p-0">
-                <p className="text-lg leading-relaxed text-muted-foreground">
-                  Mechanical Engineer with current industry experience and a growing passion for technology and digital innovation. 
-                  I am actively building my skills in Python, Django, HTML, CSS, JavaScript, MySQL, MongoDB, MS Excel, and Power BI, 
-                  along with strengthening my foundation in Data Structures and Algorithms. Guided by adaptability and continuous learning, 
-                  I am actively exploring opportunities to transition into the tech industry, particularly in Data Analyst and Full Stack Developer roles.
-                </p>
+                <div className="flex flex-col md:flex-row items-start space-y-6 md:space-y-0 md:space-x-8">
+                  <div className="flex-shrink-0 mx-auto md:mx-0">
+                    <img 
+                      src={profileImage} 
+                      alt="Akhil Kumar Boddapati" 
+                      className="w-32 h-32 rounded-lg object-cover border-2 border-primary/20"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-lg leading-relaxed text-muted-foreground">
+                      Mechanical Engineer with current industry experience and a growing passion for technology and digital innovation. 
+                      I am actively building my skills in Python, Django, HTML, CSS, JavaScript, MySQL, MongoDB, MS Excel, and Power BI, 
+                      along with strengthening my foundation in Data Structures and Algorithms. Guided by adaptability and continuous learning, 
+                      I am actively exploring opportunities to transition into the tech industry, particularly in Data Analyst and Full Stack Developer roles.
+                    </p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
