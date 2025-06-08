@@ -1,21 +1,22 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Mail, ExternalLink, Download, Menu, X, Calendar, MapPin, Award, Code, Database, Wrench } from "lucide-react";
+import { ArrowRight, Mail, ExternalLink, Menu, X, Calendar, MapPin, Award, Code, Database, Wrench, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "next-themes";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showProfileHover, setShowProfileHover] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   const profileImage = "/lovable-uploads/bdf9dc0c-0f06-4bd3-aea7-490cd98d3a8e.png";
 
   const navItems = [
     { id: "home", label: "Home" },
-    { id: "about", label: "About" },
     { id: "experience", label: "Experience" },
     { id: "education", label: "Education" },
     { id: "projects", label: "Projects" },
@@ -125,6 +126,7 @@ const Index = () => {
   };
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       const sections = navItems.map(item => item.id);
       const currentSection = sections.find(section => {
@@ -143,6 +145,12 @@ const Index = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  if (!mounted) return null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -198,29 +206,59 @@ const Index = () => {
             </motion.div>
             
             {/* Desktop Navigation */}
-            <div className="hidden md:flex space-x-8">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`transition-all duration-300 hover:text-primary relative ${
-                    activeSection === item.id 
-                      ? "text-primary font-medium after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-primary" 
-                      : "text-muted-foreground hover:scale-105"
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
+            <div className="hidden md:flex items-center space-x-8">
+              <div className="flex space-x-8">
+                {navItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`transition-all duration-300 hover:text-primary relative ${
+                      activeSection === item.id 
+                        ? "text-primary font-medium after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-primary" 
+                        : "text-muted-foreground hover:scale-105"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+              
+              {/* Theme Toggle Button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleTheme}
+                className="h-10 w-10"
+              >
+                {theme === "dark" ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
+              </Button>
             </div>
 
             {/* Mobile Menu Button */}
-            <button
-              className="md:hidden p-2 hover:bg-muted rounded-lg transition-colors"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X /> : <Menu />}
-            </button>
+            <div className="flex items-center space-x-2 md:hidden">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleTheme}
+                className="h-10 w-10"
+              >
+                {theme === "dark" ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
+              </Button>
+              <button
+                className="p-2 hover:bg-muted rounded-lg transition-colors"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                {isMenuOpen ? <X /> : <Menu />}
+              </button>
+            </div>
           </div>
 
           {/* Mobile Navigation */}
@@ -351,56 +389,6 @@ const Index = () => {
               </div>
             </motion.div>
           </div>
-        </div>
-      </section>
-
-      {/* Enhanced About Section */}
-      <section id="about" className="py-20 bg-muted/20">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-6xl mx-auto"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              Professional Journey & Vision
-            </h2>
-            <Card className="p-8 hover:shadow-xl transition-all duration-300 border-primary/10 bg-gradient-to-br from-background to-muted/30">
-              <CardContent className="p-0">
-                <div className="flex flex-col lg:flex-row items-start space-y-8 lg:space-y-0 lg:space-x-12">
-                  <div className="flex-shrink-0 mx-auto lg:mx-0">
-                    <div className="relative group">
-                      <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-primary/10 rounded-xl blur-md group-hover:blur-lg transition-all duration-300"></div>
-                      <img 
-                        src={profileImage} 
-                        alt="Akhil Kumar Boddapati" 
-                        className="relative w-40 h-40 rounded-xl object-cover border-2 border-primary/20 group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="prose prose-lg max-w-none">
-                      <p className="text-lg leading-relaxed text-muted-foreground mb-6">
-                        <strong className="text-foreground">Passionate Mechanical Engineer</strong> with comprehensive industry experience and an ambitious vision for technological transformation. 
-                        Currently advancing expertise in <span className="text-primary font-medium">Python, Django, JavaScript</span>, and modern web technologies while mastering database management with <span className="text-primary font-medium">MySQL and MongoDB</span>.
-                      </p>
-                      
-                      <p className="text-lg leading-relaxed text-muted-foreground mb-6">
-                        Specializing in <span className="text-primary font-medium">Business Intelligence with Power BI</span> and advancing proficiency in <span className="text-primary font-medium">Data Structures & Algorithms</span>. 
-                        Driven by adaptability, continuous learning, and a commitment to excellence in every endeavor.
-                      </p>
-                      
-                      <p className="text-lg leading-relaxed text-muted-foreground">
-                        <strong className="text-foreground">Career Objective:</strong> Transitioning into the technology sector with a focus on <span className="text-primary font-medium">Data Analytics and Full Stack Development</span>, 
-                        bringing a unique perspective that bridges traditional engineering with cutting-edge digital solutions.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
         </div>
       </section>
 
@@ -714,66 +702,17 @@ const Index = () => {
                 </a>
               </Button>
             </div>
-            
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="mt-12 p-6 bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border border-primary/20"
-            >
-              <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">Response Time:</strong> I typically respond within 24 hours. 
-                <br />
-                <strong className="text-foreground">Availability:</strong> Open to full-time opportunities, freelance projects, and consulting engagements.
-              </p>
-            </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* Enhanced Footer */}
-      <footer className="py-12 border-t border-border bg-muted/30">
+      {/* Clean Footer */}
+      <footer className="py-8 border-t border-border bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-              <div className="flex items-center space-x-3">
-                <img 
-                  src={profileImage} 
-                  alt="Akhil Kumar Boddapati" 
-                  className="w-10 h-10 rounded-full object-cover border-2 border-primary/20"
-                />
-                <div>
-                  <p className="font-semibold text-foreground">Akhil Kumar Boddapati</p>
-                  <p className="text-sm text-muted-foreground">Engineering Excellence • Digital Innovation</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center space-x-6">
-                <a 
-                  href="https://www.linkedin.com/in/akhil-kumar-boddapati-962752186/?trk=opento_sprofile_details" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  <ExternalLink className="h-5 w-5" />
-                </a>
-                <a 
-                  href="mailto:akhil.boddapati@outlook.com"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  <Mail className="h-5 w-5" />
-                </a>
-              </div>
-            </div>
-            
-            <div className="mt-8 pt-8 border-t border-border text-center">
-              <p className="text-sm text-muted-foreground">
-                © 2024 Akhil Kumar Boddapati. Crafted with precision using modern web technologies.
-                <br />
-                <span className="text-xs">All rights reserved. Designed for innovation and excellence.</span>
-              </p>
-            </div>
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="text-sm text-muted-foreground">
+              © 2024 Akhil Kumar Boddapati. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
